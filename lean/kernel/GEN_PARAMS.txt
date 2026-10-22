@@ -1,0 +1,14 @@
+The kernel-only proof: parameters of the generated modules under BHH/KSub (not shipped; regenerate them).
+
+Trees: decision contexts ctxK1_3 = Flt.mkCtx 3 0.1 0.0005 1e-10 and ctxK1_4 = Flt.mkCtx 4 0.4 0.01 3e-9 (prefactor bits
+prefBitsN k), RNK = 9 (512 initial boxes); see BHHCert/ShardK.lean.  Leaf function: LkK k (BHHCert/ShardK.lean).
+The contexts only shape the trees; nothing in them is trusted.
+
+1. Cut data kc/k3_M25_all.txt and kc/k4_M25_all.txt (shipped).  They were written by the untrusted generator
+   BHHCert/KCutGen.lean (executable `kcut`, see lakefile_kcut_snippet.toml): `kcut k a b 25` for consecutive ranges
+   [a, b) of the 512 initial boxes, the outputs concatenated in box order.  Per initial box: the tree code, the native
+   leaf sums, and the cut at maximal subtrees of at most M = 25 leaves.
+2. Modules: tools/gen_kcut.py, run from this directory:
+     python3 tools/gen_kcut.py kc/k3_M25_all.txt 3 25 . --mod-leaves 200
+     python3 tools/gen_kcut.py kc/k4_M25_all.txt 4 25 . --mod-leaves 200
+   This writes the 10,112 files listed in KSub_SHA256SUMS (check with `sha256sum -c KSub_SHA256SUMS`).
